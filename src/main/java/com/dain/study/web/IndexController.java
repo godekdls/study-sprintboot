@@ -1,5 +1,7 @@
 package com.dain.study.web;
 
+import com.dain.study.config.auth.LoginUser;
+import com.dain.study.config.auth.dto.SessionUser;
 import com.dain.study.service.posts.PostsService;
 import com.dain.study.web.dto.PostsResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -15,8 +17,11 @@ public class IndexController {
     private final PostsService postsService;
 
     @GetMapping("/")
-    public String index(Model model) {
+    public String index(Model model, @LoginUser SessionUser user) {
         model.addAttribute("posts", postsService.findAllDesc());
+        if (user != null) {
+            model.addAttribute("userName", user.getName());
+        }
         return "index";
     }
 
